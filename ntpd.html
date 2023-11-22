@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Notepad</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 300px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Online Notepad</h1>
+  
+  <textarea id="notepad"></textarea>
+
+  <button onclick="saveText()">Save as .txt</button>
+  <button onclick="loadText()">Load Text</button>
+
+  <script>
+    function saveText() {
+      var textToSave = document.getElementById("notepad").value;
+      var blob = new Blob([textToSave], { type: "text/plain;charset=utf-8" });
+      saveAs(blob, "notepad_text.txt");
+    }
+
+    function loadText() {
+      var input = document.createElement('input');
+      input.type = 'file';
+
+      input.onchange = function (e) {
+        var file = e.target.files[0];
+
+        if (!file) {
+          return;
+        }
+
+        var reader = new FileReader();
+        reader.onload = function () {
+          document.getElementById('notepad').value = reader.result;
+        };
+
+        reader.readAsText(file);
+      };
+
+      input.click();
+    }
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</body>
+</html>
